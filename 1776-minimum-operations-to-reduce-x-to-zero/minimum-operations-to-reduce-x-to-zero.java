@@ -1,0 +1,44 @@
+class Solution {
+    public int minOperations(int[] nums, int x) {
+
+        int totalSum = 0;
+
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        int target = totalSum - x;
+
+        // Agar target negative hai
+        if (target < 0) {
+            return -1;
+        }
+
+        // target = 0
+        if (target == 0) {
+            return nums.length;
+        }
+
+        int left = 0;
+        int sum = 0;
+        int maxLength = -1;
+
+        for (int right = 0; right < nums.length; right++) {
+
+            sum += nums[right];
+
+            // Window ka sum target se bada hai
+            while (sum > target && left <= right) {
+                sum -= nums[left];
+                left++;
+            }
+
+            // Target mil gaya
+            if (sum == target) {
+                maxLength = Math.max(maxLength, right - left + 1);
+            }
+        }
+
+        return maxLength == -1 ? -1 : nums.length - maxLength;
+    }
+}
